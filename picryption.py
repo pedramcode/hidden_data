@@ -2,6 +2,7 @@ from PIL import Image, ImageColor
 import argparse
 import os
 from termcolor import colored
+from datetime import datetime
 
 
 parser = argparse.ArgumentParser(description="Hidden content in image tool")
@@ -44,6 +45,7 @@ if __name__ == "__main__":
     if content_file_size * 8 / args.bits > image_file_size * 8:
         message("Error", "Image is too small to keep this amount of data", "red", True)
 
+    start_time = datetime.now()
     message(f"- Operation #{op}", f"Reading image file \"{args.image}\" [{image_file_size} Bytes]", "blue")
     op += 1
     image = Image.open(args.image)
@@ -76,7 +78,10 @@ if __name__ == "__main__":
                 index += 1
             out_pixels[x, y] = write_pixel
 
+    finish_time = datetime.now()
+    time_took = (finish_time - start_time).total_seconds()
     message(f"- Operation #{op}", f"Done! output: \"{args.output}\"", "green")
+    message(f"- Took: ", f"{time_took} sec", "green")
     op += 1
 
     output_image.save(args.output)
